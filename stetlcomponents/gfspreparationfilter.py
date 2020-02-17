@@ -163,14 +163,14 @@ $featurecounts
 
     def parse_ogrinfo_output(self, output_ogrinfo):
         pattern = re.compile('Layer name: (\w+:)?(?P<elemtype>\w+).*?Feature Count: (?P<featurecount>[0-9]+)', re.S)
-        matches = pattern.findall(output_ogrinfo)
+        matches = pattern.findall(output_ogrinfo.decode('utf-8'))
         feature_counts = dict([(m[1], int(m[2])) for m in matches])
 
         return feature_counts
 
     def prepare_xslt_template(self, feature_counts):
-        elemtypes = [self.TEST_ELEMTYPE % (key, key) for key in feature_counts.iterkeys()]
-        featurecounts = [self.TEST_FEATURECOUNT % (key, value, key, value) for key, value in feature_counts.iteritems()]
+        elemtypes = [self.TEST_ELEMTYPE % (key, key) for key in feature_counts.keys()]
+        featurecounts = [self.TEST_FEATURECOUNT % (key, value, key, value) for key, value in feature_counts.items()]
 
         subst_dict = {}
         subst_dict['elemtypes'] = ''.join(elemtypes)
@@ -182,7 +182,7 @@ $featurecounts
         return formatted_xslt
 
     def transform_input_gfs(self, formatted_xslt):
-        xslt_doc = etree.fromstring(formatted_xslt)
+        xslt_doc = etree.fromstring(formatted_xslt.encode('ascii'))
         xslt_obj = etree.XSLT(xslt_doc)
         xml_doc = etree.parse(self.input_gfs)
         result = xslt_obj(xml_doc)

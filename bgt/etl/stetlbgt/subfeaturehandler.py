@@ -126,9 +126,9 @@ class SubFeatureHandler(Filter):
 
         nsmap = {None: "http://www.opengis.net/citygml/2.0"}
 
-        with etree.xmlfile(self.temp_file) as xf:
+        with etree.xmlfile(self.temp_file, encoding='utf-8') as xf:
             with xf.element('{http://www.opengis.net/citygml/2.0}CityModel', nsmap=nsmap):
-                with open(input_gml) as f:
+                with open(input_gml, mode='rb') as f:
                     context = etree.iterparse(f)
                     for action, elem in context:
                         if action == 'end' and elem.tag == '{http://www.opengis.net/citygml/2.0}cityObjectMember':
@@ -140,10 +140,12 @@ class SubFeatureHandler(Filter):
                             elem.clear()
                             while elem.getprevious() is not None:
                                 del elem.getparent()[0]
+                            
+                            xf.flush()
 
                     del context
 
-            xf.flush()
+            #xf.flush()
 
         # Delete the old file and rename the new file
         os.remove(packet.data)
@@ -155,7 +157,7 @@ class SubFeatureHandler(Filter):
     def checkGmlFile(self, input_gml):
         result = False
         parentTag = '{%s}%s' % (self.parent_tag_ns, self.parent_tag_name)
-        with open(input_gml) as f:
+        with open(input_gml, mode="rb") as f:
             prevTag = ''
             context = etree.iterparse(f)
             for action, elem in context:

@@ -36,11 +36,26 @@ filename=$(basename ${target_file})
 # Blijf proberen bestand op te halen tot gelukt
 while true
 do
+  
+  echo ${target_file}
+
+  if [ -f ${target_file} ]
+  then
+    echo "File exists"
+   
+    unzip -l ${target_file}
+    if [ $? -eq 0 ] && [ -s "${target_file}" ]
+    then
+      echo "File ${filename} already found - skip download"
+      break
+    fi
+  fi
+
   echo "Downloading ${filename} ..."
   /bin/rm -f ${target_file} > /dev/null 2>&1
 
   # Haal file op
-  wget -O ${target_file} --no-check-certificate ${target_url} 2>/dev/null
+  wget -O ${target_file} --show-progress --no-check-certificate ${target_url} #2>/dev/null
 
   # Check download outcome and stop on error
   if [ $? -ne 0 ]
