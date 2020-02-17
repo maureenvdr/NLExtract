@@ -1,0 +1,13 @@
+# Ignore dep and Dockerfile
+
+externals
+doc
+Dockerfile
+.git
+
+bgt/etl/*.zip
+bgt/etl/temp/*
+
+*.gfs
+*.gml
+
