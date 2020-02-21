@@ -4,6 +4,9 @@ externals
 doc
 Dockerfile
 .git
+.gitignore
+.gitmodules
+run-docker*
 
 bgt/etl/*.zip
 bgt/etl/temp/*
