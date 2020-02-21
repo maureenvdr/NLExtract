@@ -127,9 +127,10 @@ class SubFeatureHandler(Filter):
         nsmap = {None: "http://www.opengis.net/citygml/2.0"}
 
         try:
+            #with etree.xmlfile(self.temp_file, encoding='utf-8') as xf:
             with etree.xmlfile(self.temp_file) as xf:
                 with xf.element('{http://www.opengis.net/citygml/2.0}CityModel', nsmap=nsmap):
-                    with open(input_gml) as f:
+                    with open(input_gml, mode='rb') as f:
                         context = etree.iterparse(f)
                         for action, elem in context:
                             if action == 'end' and elem.tag == '{http://www.opengis.net/citygml/2.0}cityObjectMember':
@@ -154,10 +155,11 @@ class SubFeatureHandler(Filter):
             pass
 
         # Check if the resulting file can be opened successfully
-        with open(self.temp_file) as f:
+        with open(self.temp_file, mode='rb') as f:
             context = etree.iterparse(f, tag='{http://www.opengis.net/citygml/2.0}cityObjectMember')
             for _, elem in context:
-                elem.clear(keep_tail=True)
+                #elem.clear(keep_tail=True)
+                elem.clear()
             del context
 
         log.info('Temporary XML file was written successfully')
