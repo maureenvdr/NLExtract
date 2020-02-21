@@ -1,0 +1,1 @@
+./bgt/etl/run-etl-bgt.sh "21-02-2020" "39 45"
