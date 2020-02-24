@@ -1,6 +1,6 @@
-docker rm -f nlex
+docker rm -f nlextract
 
 winpty docker run \
-  --name nlex \
+  --name nlextract \
   --mount type=bind,source=/d/docker/binds/nlextract,target=/etlresult \
-  nlex:latest
+  nlextract:latest

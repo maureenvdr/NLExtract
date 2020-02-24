@@ -43,7 +43,7 @@ targetconfig="$DIR/options/custom_$today.args"
 if [ ! -f "$targetconfig" ]
 then
     cp "$DIR/options/custom.args" $targetconfig
-    echo "input_dir=$target" >> $targetconfig
+    echo "backed up config $target to $targetconfig"
 fi
 
 "$DIR/etl-imgeo.sh" $targetconfig
